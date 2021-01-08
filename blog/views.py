@@ -1,7 +1,15 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from blog.commands import CreateArticleCommand
 from blog.models import Article
+
+
+def get_by_id_view(request, article_id):
+    return JsonResponse(Article.get_by_id(article_id).json(), safe=False)
+
+
+def get_by_title_view(request, article_title):
+    return JsonResponse(Article.get_by_title(article_title).json(), safe=False)
 
 
 def test_view(request):
@@ -15,6 +23,8 @@ def test_view(request):
 
     article = cmd.execute()
     db_article = Article.get_by_id(article.id)
+
+    print(article.json())
 
     return HttpResponse(db_article.title)
 
