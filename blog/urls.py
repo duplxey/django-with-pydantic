@@ -1,10 +1,9 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 from blog import views
 
 urlpatterns = [
-    path('id/<str:article_id>/', views.get_by_id_view),
-    path('title/<str:article_title>/', views.get_by_title_view),
-    path('test/', views.test_view),
+    path('create-article/', views.create_article),
+    path('article/<str:article_id>/', views.get_article),
+    path('article-list/', views.get_article_list),
 ]

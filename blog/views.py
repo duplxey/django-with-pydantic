@@ -1,30 +1,31 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 
 from blog.commands import CreateArticleCommand
-from blog.models import Article
+from blog.queries import ListArticlesQuery, GetArticleByIDQuery
 
 
-def get_by_id_view(request, article_id):
-    return JsonResponse(Article.get_by_id(article_id).json(), safe=False)
-
-
-def get_by_title_view(request, article_title):
-    return JsonResponse(Article.get_by_title(article_title).json(), safe=False)
-
-
-def test_view(request):
-    print("test_view")
-
+@csrf_exempt  # testing purposes, you should always pass your CSRF token with your requests
+@require_http_methods(["POST"])
+def create_article(request):
     cmd = CreateArticleCommand(
-        author='john@doe.com',
-        title='New Article',
-        content='Super awesome article'
+        author=request.POST['author'],
+        title=request.POST['title'],
+        content=request.POST['content']
     )
+    return JsonResponse(cmd.execute().dict())
 
-    article = cmd.execute()
-    db_article = Article.get_by_id(article.id)
 
-    print(article.json())
+def get_article(request, article_id):
+    query = GetArticleByIDQuery(id=article_id)
+    record = query.execute()
+    return JsonResponse(record.dict(), safe=False)
 
-    return HttpResponse(db_article.title)
+
+def get_article_list(request):
+    query = ListArticlesQuery()
+    records = [record.dict() for record in query.execute()]
+    return JsonResponse(records, safe=False)
+
 

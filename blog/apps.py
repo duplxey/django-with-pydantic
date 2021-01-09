@@ -6,5 +6,6 @@ from blog.models import Article
 class BlogConfig(AppConfig):
     name = 'blog'
 
-    # Create the Article table
-    Article.create_table()
+    def ready(self):
+        # Create the Article table
+        Article.create_table()
