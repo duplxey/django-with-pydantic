@@ -4,7 +4,8 @@ from django.db import models
 
 class Article(models.Model):
     author = models.ForeignKey(to=User, null=True, on_delete=models.SET_NULL)
-    title = models.CharField(max_length=512)
+    created = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=512, unique=True)
     content = models.TextField()
 
     def __str__(self):
