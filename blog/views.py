@@ -41,7 +41,8 @@ def get_article_list(request):
     data = []
 
     for article in articles:
-        data.append(ArticleSchema.from_django(article).dict())
+        schema = ArticleSchema.from_django(article)
+        data.append(schema.dict())
 
     return JsonResponse({
         'articles': data

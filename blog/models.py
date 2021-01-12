@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Article(models.Model):
-    author = models.ForeignKey(to=User, null=True, on_delete=models.SET_NULL)
+    author = models.ForeignKey(to=User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=512, unique=True)
     content = models.TextField()
