@@ -9,4 +9,4 @@ class Article(models.Model):
     content = models.TextField()
 
     def __str__(self):
-        return self.author.username + ": " + self.title
+        return f'{self.author.username}: {self.title}'
