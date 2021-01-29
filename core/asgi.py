@@ -1,5 +1,5 @@
 """
-ASGI config for django_with_pydantic project.
+ASGI config for core project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_with_pydantic.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
 application = get_asgi_application()

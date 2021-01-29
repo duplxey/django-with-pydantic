@@ -4,25 +4,27 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
 from blog.models import Article
-from blog.schemas import ArticleSchema
+from blog.schemas import ArticleSchema, ArticleResponseSchema
 
 
-@csrf_exempt  # testing purposes, you should always pass your CSRF token with your POST requests (+ authentication)
+@csrf_exempt  # testing purposes; you should always pass your CSRF token with your POST requests (+ authentication)
 @require_http_methods("POST")
 def create_article(request):
     try:
         # fetch the user and pass it to schema
-        author = User.objects.get(id=request.POST['author'])
+        import json
+        json_data = json.loads(request.body)
+        author = User.objects.get(id=json_data['author'])
         schema = ArticleSchema.create(
             author=author,
-            title=request.POST['title'],
-            content=request.POST['content']
+            title=json_data['title'],
+            content=json_data['content']
         )
         return JsonResponse({
             'article': schema.dict()
         })
     except User.DoesNotExist:
-        return JsonResponse({'detail': 'Cannot find an user with this id.'}, status=404)
+        return JsonResponse({'detail': 'Cannot find a user with this id.'}, status=404)
 
 
 def get_article(request, article_id):
@@ -36,12 +38,12 @@ def get_article(request, article_id):
         return JsonResponse({'detail': 'Cannot find an article with this id.'}, status=404)
 
 
-def get_article_list(request):
+def get_all_articles(request):
     articles = Article.objects.all()
     data = []
 
     for article in articles:
-        schema = ArticleSchema.from_django(article)
+        schema = ArticleResponseSchema.from_django(article)
         data.append(schema.dict())
 
     return JsonResponse({
