@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -8,12 +10,12 @@ from blog.schemas import ArticleSchema, ArticleResponseSchema
 
 
 @csrf_exempt  # testing purposes; you should always pass your CSRF token with your POST requests (+ authentication)
-@require_http_methods("POST")
+@require_http_methods('POST')
 def create_article(request):
     try:
-        # fetch the user and pass it to schema
-        import json
         json_data = json.loads(request.body)
+
+        # fetch the user and pass it to schema
         author = User.objects.get(id=json_data['author'])
         schema = ArticleSchema.create(
             author=author,
