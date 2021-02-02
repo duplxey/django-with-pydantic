@@ -2,7 +2,7 @@
 
 ## Want to learn how to build this?
 
-Check out the [post](x).
+Check out the [post](https://testdriven.io/blog/django-and-pydantic/).
 
 ## Want to use this project?
 
