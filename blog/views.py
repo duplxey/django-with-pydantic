@@ -17,11 +17,14 @@ def create_article(request):
 
         # fetch the user and pass it to schema
         author = User.objects.get(id=json_data['author'])
-        schema = ArticleSchema.create(
+        article = Article(
             author=author,
             title=json_data['title'],
             content=json_data['content']
         )
+        article.save()
+        schema = ArticleSchema.from_django(article)
+        
         return JsonResponse({
             'article': schema.dict()
         })

@@ -1,4 +1,4 @@
-from pydantic_django import ModelSchema
+from djantic import ModelSchema
 
 from blog.models import Article
 
