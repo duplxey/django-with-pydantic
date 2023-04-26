@@ -1,4 +1,4 @@
-# Django with Pydantic (pydantic-django)
+# Django with Pydantic (djantic)
 
 ## Want to learn how to build this?
 
